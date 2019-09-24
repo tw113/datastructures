@@ -6,21 +6,27 @@ namespace custom {
         public:
         class iterator {
             public:
-                T ptr = NULL;
+                T * ptr = NULL;
                 iterator();
-                iterator(T p);
-                iterator(iterator rhs);
+                iterator(T * p);
+                iterator(const iterator & rhs);
                 
-                iterator assignment(iterator it);
-                bool isEquals(iterator it);
-                bool isNEqual(iterator it);
-                iterator increment();
-                iterator decrement();
-                T dereference();
+                iterator & iterator :: operator = (const iterator & rhs);
+
+                bool operator == (const iterator & lhs);
+                bool operator != (const iterator & lhs);
+
+                iterator operator ++ ();
+                iterator operator ++ (int postfix);
+
+                iterator operator -- ();
+                iterator operator -- (int postfix);
+
+                T operator * ();
         }; 
 
         private:
-            T* array = NULL;
+            T * array = NULL;
 
         public:
             int numElements;
@@ -29,22 +35,22 @@ namespace custom {
             vector();
             vector(int numElements);
             vector(int numElements, T t);
-            //vector(vector rhs);
+            vector(vector & rhs);
             ~vector();
 
-            vector & operator = (vector rhs);
+            vector & operator = (const vector & rhs);
             int size();
             int capacity();
             bool empty();
-            clear();
-            buffer();
+            void clear();
+            void buffer();
 
-            push_back(T t);
-            T access(int index);
+            void push_back(T t);
+            T & vector :: operator [] (int index);
             iterator begin();
             iterator end();
 
-            resize(int numCapacity);
+            void resize(int numCapacity);
     };
 
 }
