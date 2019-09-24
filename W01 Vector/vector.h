@@ -3,11 +3,10 @@ namespace custom {
     template <class T>
     class vector {
 
+        public:
         class iterator {
-            private:
-                T pointer = NULL;
-
             public:
+                T ptr = NULL;
                 iterator();
                 iterator(T p);
                 iterator(iterator rhs);
@@ -30,9 +29,10 @@ namespace custom {
             vector();
             vector(int numElements);
             vector(int numElements, T t);
-            vector(vector rhs);
+            //vector(vector rhs);
+            ~vector();
 
-            vector assign(vector rhs);
+            vector & operator = (vector rhs);
             int size();
             int capacity();
             bool empty();
