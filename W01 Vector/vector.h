@@ -1,3 +1,6 @@
+#ifndef VECTOR_H
+#define VECTOR_H
+
 namespace custom {
 
     template <class T>
@@ -34,13 +37,13 @@ namespace custom {
 
             vector();
             vector(int numElements);
-            vector(int numElements, T t);
-            vector(vector & rhs);
+            vector(int numElements, const T t); //Added const
+            vector(const vector <T> & rhs);  //Added "const" and "<T>" following teachers code
             ~vector();
 
             vector & operator = (const vector & rhs);
             int size();
-            int capacity();
+            int capacity();   
             bool empty();
             void clear();
             void buffer();
@@ -53,4 +56,8 @@ namespace custom {
             void resize(int numCapacity);
     };
 
+    #include "vector.cpp" 
+
 }
+
+#endif
