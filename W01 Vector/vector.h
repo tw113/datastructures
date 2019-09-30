@@ -19,10 +19,10 @@ namespace custom {
                 bool operator == (const iterator & lhs);
                 bool operator != (const iterator & lhs);
 
-                iterator operator ++ ();
+                iterator & operator ++ ();
                 iterator operator ++ (int postfix);
 
-                iterator operator -- ();
+                iterator & operator -- ();
                 iterator operator -- (int postfix);
 
                 T operator * ();
