@@ -34,6 +34,7 @@ namespace custom {
         public:
             int numElements;
             int numCapacity;
+            T buffer;
 
             vector();
             vector(int numElements);
@@ -46,7 +47,6 @@ namespace custom {
             int capacity();   
             bool empty();
             void clear();
-            void buffer();
 
             void push_back(T t);
             T & vector :: operator [] (int index);
