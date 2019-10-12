@@ -14,7 +14,7 @@ queue<T> :: queue()
 template <class T> 
 queue<T> :: queue(int numCapacity)
 {
-    
+    //todo
 }
 
 template <class T>
@@ -33,7 +33,7 @@ template <class T>
 queue<T>& queue<T> :: operator = (const queue <T> & rhs)
 {
     numCapacity = rhs.numPush - rhs.numPop;
-    
+    //needds finished
 }
 
 template <class T> 
@@ -113,7 +113,7 @@ void queue<T> :: resize(int newCapacity)
 {
        if (newCapacity == 0)
    {
-      numCapacity = 0;
+      numCapacity = 0;                 //made changes to this but needs tested
       size() = 0;
       buffer = NULL;
    }
