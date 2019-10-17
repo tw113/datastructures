@@ -9,7 +9,7 @@ namespace custom
     {
         public:
 
-        queue()
+        queue();
         queue(int numCapacity);
         queue(const queue <T> & rhs);
         ~queue();
