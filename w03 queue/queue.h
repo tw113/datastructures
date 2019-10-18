@@ -38,5 +38,5 @@ namespace custom
         int numPush;
         int numPop;
         int numCapacity;
-    }
+    };
 }
