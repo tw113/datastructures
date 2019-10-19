@@ -1,4 +1,5 @@
 #include "queue.h"
+#include <cstddef>
 
 using namespace custom;
 
@@ -14,7 +15,10 @@ queue<T> :: queue()
 template <class T> 
 queue<T> :: queue(int numCapacity)
 {
-    //todo
+    buffer = NULL;
+    numPop = 0;
+    numPush = 0;
+    this->numCapacity = numCapacity;
 }
 
 template <class T>
@@ -32,8 +36,16 @@ queue<T> :: ~queue()
 template <class T>
 queue<T>& queue<T> :: operator = (const queue <T> & rhs)
 {
-    numCapacity = rhs.numPush - rhs.numPop;
-    //needds finished
+    clear();
+    if(numCapacity < rhs.size())
+    {
+        resize(rhs.size());
+    }
+    for(int i = rhs.numPop; i < rhs.numPush; i++)
+    {
+        push(rhs.buffer[i % rhs.numCapacity]);
+    }
+    return *this;
 }
 
 template <class T> 
@@ -42,14 +54,14 @@ int queue<T> :: size()
     return numPush - numPop;
 }
 
-template <T>
+template <class T>
 bool queue<T> :: empty()
 {
-    size() == 0;
+    return size() == 0;
 }
 
 template <class T>
-int queue<T>::capacity() const
+int queue<T>::capacity()
 {
    return numCapacity;
 }
@@ -57,22 +69,23 @@ int queue<T>::capacity() const
 template <class T>
 void queue<T> :: clear()
 {
-    size() = 0;
+    numPush = 0;
+    numPop = 0;
 }
 
 template <class T>
-queue<T> :: push(T t)
+void queue<T> :: push(const T & t)
 {
     if(size() == capacity())
     {
-        resize(capacity() * 2)
+        resize(capacity() * 2);
     }
     numPush++;
     buffer[iTail()] = t;
 }
 
 template <class T> 
-queue<T> :: pop()
+void queue<T> :: pop()
 {
     if(!empty())
     {
@@ -81,7 +94,7 @@ queue<T> :: pop()
 }
 
 template <class T> 
-T queue<T> :: front()
+T & queue<T> :: front()
 {
     if(empty())
     {
@@ -89,13 +102,13 @@ T queue<T> :: front()
     }
     else
     {
-        return buff[iHead()];
+        return buffer[iHead()];
     }
     
 }
 
 template <class T> 
-T queue<T> :: back()
+T & queue<T> :: back()
 {
     if(empty())
     {
@@ -103,7 +116,7 @@ T queue<T> :: back()
     }
     else
     {
-        return buffer{iTail()};
+        return buffer[iTail()];
     }
     
 }
@@ -111,12 +124,11 @@ T queue<T> :: back()
 template <class T>
 void queue<T> :: resize(int newCapacity)
 {
-       if (newCapacity == 0)
-   {
-      numCapacity = 0;                 //made changes to this but needs tested
-      size() = 0;
-      buffer = NULL;
-   }
+    if (newCapacity == 0)
+    {
+        clear();
+        buffer = NULL;
+    }
    
    if (newCapacity > 0)
    {
@@ -127,7 +139,7 @@ void queue<T> :: resize(int newCapacity)
       buffer = newBuffer;
       numCapacity = newCapacity;
       if (newCapacity < size())
-         size() = newCapacity;
+         numCapacity = newCapacity;
    }
 }
 

@@ -1,6 +1,9 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#ifdef UNIT_TESTING
+int main(int argc, const char* argv[]);
+#endif
 
 namespace custom
 {
@@ -9,7 +12,9 @@ namespace custom
     {
         public:
 
-        queue()
+        friend int ::main(int argc, const char* argv[]);
+
+        queue();
         queue(int numCapacity);
         queue(const queue <T> & rhs);
         ~queue();
@@ -19,8 +24,8 @@ namespace custom
         int size();
         bool empty();
         void clear();
-        void capacity();
-        void push(T & t);
+        int capacity();
+        void push(const T & t);
         void pop();
         T & front();
         T & back();
@@ -38,5 +43,9 @@ namespace custom
         int numPush;
         int numPop;
         int numCapacity;
-    }
+    };
 }
+
+#include "queue.cpp"
+
+#endif
