@@ -7,7 +7,12 @@ int main(int argc, const char* argv[]);
 
 namespace custom
 {
+    template <class T>
+    class deque {
     public:
+
+        friend int main(int argc, const char* argv[]);
+
         deque();
         deque(int numCapacity);
         deque(const deque <T> & rhs);
@@ -37,11 +42,9 @@ namespace custom
         int iFront;
         int iBack;
         int numCapacity;
+    };
+}
 
-
-
-
-};
 #include "deque.cpp"
 
 #endif

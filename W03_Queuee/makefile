@@ -1,5 +1,5 @@
   # the compiler: gcc for C program, define as g++ for C++
-  CC = make
+  CC = g++
 
   # compiler flags:
   #  -g    adds debugging information to the executable file

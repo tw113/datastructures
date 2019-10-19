@@ -1,4 +1,5 @@
 #include "deque.h"
+#include <cstddef>
 
 using namespace custom;
 
@@ -30,7 +31,7 @@ deque<T> :: ~deque()
 }
 
 template <class T>
-deque <T> & operator = (const deque <T> & rhs)
+deque<T>& deque<T> :: operator = (const deque <T> & rhs)
 {
     clear();
     if(lhs.capacity() < rhs.size())
@@ -101,7 +102,7 @@ void deque<T> :: pop_back()
 }
 
 template <class T>
-T deque<T> :: front()
+T & deque<T> :: front()
 {
     if(empty)
     {
@@ -115,7 +116,7 @@ T deque<T> :: front()
 }
 
 template <class T>
-T deque<T> :: back()
+T & deque<T> :: back()
 {
     if(empty())
     {

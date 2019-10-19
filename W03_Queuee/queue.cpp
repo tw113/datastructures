@@ -1,5 +1,5 @@
-#include "queue.h"
 #include <cstddef>
+#include "queue.h"
 
 using namespace custom;
 
@@ -36,16 +36,16 @@ queue<T> :: ~queue()
 template <class T>
 queue<T>& queue<T> :: operator = (const queue <T> & rhs)
 {
-    clear();
-    if(numCapacity < rhs.size())
-    {
-        resize(rhs.size());
-    }
-    for(int i = rhs.numPop; i < rhs.numPush; i++)
-    {
-        push(rhs.buffer[i % rhs.numCapacity]);
-    }
-    return *this;
+    // clear();
+    // if(capacity() < rhs.size())
+    // {
+    //     resize(rhs.size());
+    // }
+    // for(int i = rhs.numPop; i < rhs.numPush; i++)
+    // {
+    //     push(rhs.buffer[i % rhs.numCapacity]);
+    // }
+    // return *this;
 }
 
 template <class T> 
@@ -152,5 +152,5 @@ int queue<T> :: iHead()
 template <class T> 
 int queue<T> :: iTail()
 {
-    return buffer[numPush - numPop];
+    //return buffer[numPush - numPop];
 }

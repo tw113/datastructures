@@ -10,13 +10,19 @@ namespace custom
     template <class T>
     class queue
     {
+        private:
+        T * buffer;
+        
+        int numPush;
+        int numPop;
+        int numCapacity;
+
         public:
 
-<<<<<<< HEAD
+        #ifdef UNIT_TESTING
         friend int ::main(int argc, const char* argv[]);
+        #endif
 
-=======
->>>>>>> e25f1acd8ca04feda3b3333a877ad905a9e60ab7
         queue();
         queue(int numCapacity);
         queue(const queue <T> & rhs);
@@ -40,12 +46,6 @@ namespace custom
         void resize(int numCapacity);
         int iHead();
         int iTail();
-
-        T * buffer;
-        
-        int numPush;
-        int numPop;
-        int numCapacity;
     };
 }
 
