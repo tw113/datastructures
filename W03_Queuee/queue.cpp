@@ -6,9 +6,9 @@ using namespace custom;
 template <class T>
 queue<T> :: queue() 
 {
-    int numPop = 0;
-    int numPush = 0;
-    int numCapacity = 0;
+    numPop = 0;
+    numPush = 0;
+    numCapacity = 0;
     buffer = NULL;
 }
 
@@ -24,6 +24,9 @@ queue<T> :: queue(int numCapacity)
 template <class T>
 queue<T> :: queue(const queue <T> & rhs)
 {
+    numPop = 0;
+    numPush = 0;
+    numCapacity = 0;
     *this = rhs;
 }
 
@@ -36,16 +39,16 @@ queue<T> :: ~queue()
 template <class T>
 queue<T>& queue<T> :: operator = (const queue <T> & rhs)
 {
-    // clear();
-    // if(capacity() < rhs.size())
-    // {
-    //     resize(rhs.size());
-    // }
-    // for(int i = rhs.numPop; i < rhs.numPush; i++)
-    // {
-    //     push(rhs.buffer[i % rhs.numCapacity]);
-    // }
-    // return *this;
+    clear();
+    if(numCapacity < (rhs.numPush - rhs.numPop))
+    {
+        resize(rhs.numPush - rhs.numPop);
+    }
+    for(int i = rhs.numPop; i < rhs.numPush; i++)
+    {
+        push(rhs.buffer[i % rhs.numCapacity]);
+    }
+    return *this;
 }
 
 template <class T> 
@@ -76,10 +79,10 @@ void queue<T> :: clear()
 template <class T>
 void queue<T> :: push(const T & t)
 {
+    if(capacity() == 0)
+        resize(1);
     if(size() == capacity())
-    {
         resize(capacity() * 2);
-    }
     numPush++;
     buffer[iTail()] = t;
 }
@@ -127,30 +130,39 @@ void queue<T> :: resize(int newCapacity)
     if (newCapacity == 0)
     {
         clear();
+        numCapacity = 0;
         buffer = NULL;
     }
    
    if (newCapacity > 0)
    {
-      T* newBuffer = new T[newCapacity];
-      for (int i = 0; i < numCapacity; i++)
-         newBuffer[i] = buffer[i];
-      delete [] buffer;
-      buffer = newBuffer;
-      numCapacity = newCapacity;
-      if (newCapacity < size())
-         numCapacity = newCapacity;
+        T* newBuffer = new T[newCapacity];
+        int numElements;
+        if(newCapacity < size())
+            numElements = newCapacity;
+        else
+            numElements = size();
+        for (int i = 0; i < numElements; i++, numPop++)
+            newBuffer[i] = buffer[iHead()];
+        delete [] buffer;
+        buffer = newBuffer;
+        numCapacity = newCapacity;
+        numPop = 0;
+        numPush = numElements;
    }
 }
 
 template <class T>
 int queue<T> :: iHead()
 {
-    return buffer[0];
+    return numPop % numCapacity;
 }
 
 template <class T> 
 int queue<T> :: iTail()
 {
-    //return buffer[numPush - numPop];
+    if(numPush != 1)
+        return (numPush - 1) % numCapacity;
+    else
+        return 0;
 }
