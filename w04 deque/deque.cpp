@@ -15,13 +15,19 @@ deque<T> :: deque()
 template <class T>        
 deque<T> :: deque(int numCapacity)
 {
-
+    buffer = NULL;
+    iFront = 0;
+    iBack = -1;
+    this-> numCapacity = numCapacity;
 }
 
 template <class T>
 deque<T> :: deque(const deque <T> & rhs)
 {
-
+    iFront = 0;
+    iBack = -1;
+    numCapacity = 0;
+    *this = rhs;
 }
 
 template <class T>
@@ -38,7 +44,11 @@ deque<T>& deque<T> :: operator = (const deque <T> & rhs)
     {
         resize(rhs.size());
     }
-    for()
+    for(int i = rhs.numCapacity; i < size(); i++;)
+    {
+        push_back(rhs.buffer[i % rhs.numCapacity]);
+    }
+    return *this;
 }
 template<class T>
 int deque<T> :: size()
@@ -130,9 +140,29 @@ T & deque<T> :: back()
 }
 
 template <class T>
-void deque<T> :: resize(int numCapacity)
+void deque<T> :: resize(int newCapacity)
 {
-
+    if (newCapacity == 0)
+    {
+        clear();
+        numCapacity = 0;
+        buffer = NULL;
+    }
+   
+   if (newCapacity > 0)
+   {
+        T* newBuffer = new T[newCapacity];
+        int numElements;
+        if(newCapacity < size())
+            numElements = newCapacity;
+        else
+            numElements = size();
+        for (int i = 0; i < numElements; i++)
+            newBuffer[i] = buffer[iFrontNormalize()];
+        delete [] buffer;
+        buffer = newBuffer;
+        numCapacity = newCapacity;
+   }
 }
 
 template <class T>
