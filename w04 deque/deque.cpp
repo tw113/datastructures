@@ -15,10 +15,16 @@ deque<T> :: deque()
 template <class T>        
 deque<T> :: deque(int numCapacity)
 {
-    buffer = NULL;
+    buffer = new T[0];
     iFront = 0;
     iBack = -1;
-    this-> numCapacity = numCapacity;
+    if(numCapacity >= 0)
+        this-> numCapacity = numCapacity;
+    else if(numCapacity < 0)
+    {
+        throw "Error: deque sizes must be greater than or equal to 0.";
+    }
+    
 }
 
 template <class T>
@@ -40,9 +46,10 @@ template <class T>
 deque<T>& deque<T> :: operator = (const deque <T> & rhs)
 {
     clear();
-    if(numCapacity < rhs.size())
+    int rhsSize = rhs.iBack - rhs.iFront + 1;
+    if(numCapacity < rhsSize)
     {
-        resize(rhs.size());
+        resize(rhsSize);
     }
     for(int i = rhs.numCapacity; i < size(); i++)
     {
@@ -73,10 +80,10 @@ void deque<T> :: clear()
 template <class T>
 void deque<T> :: push_front(const T & t)
 {
+    if(capacity() == 0)
+        resize(1);
     if(size() == capacity())
-    {
         resize(capacity() * 2);
-    }
     iFront++;
     buffer[iFrontNormalize()] = t;
 }
@@ -84,10 +91,10 @@ void deque<T> :: push_front(const T & t)
 template <class T>
 void deque<T> :: push_back(const T & t)
 {
+    if(capacity() == 0)
+        resize(1);
     if(size() == capacity())
-    {
         resize(capacity() * 2);
-    }
     iBack++;
     buffer[iBackNormalize()] = t;
 }
@@ -175,7 +182,11 @@ int deque<T> :: capacity()
 template <class T>
 int deque<T> :: iNormalize(int index)
 {
-    return index % capacity();
+    if(numCapacity > 0)
+        return index % numCapacity;
+    else
+        return index;
+    
 }
 
 template <class T>
