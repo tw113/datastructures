@@ -13,6 +13,11 @@ namespace custom
 
         friend int main(int argc, const char* argv[]);
 
+        T * buffer;
+        int iFront;
+        int iBack;
+        int numCapacity;
+
         deque();
         deque(int numCapacity);
         deque(const deque <T> & rhs);
@@ -32,16 +37,11 @@ namespace custom
         T & front();
         T & back();
 
-    private:
         void resize(int numCapacity);
         int capacity();
+        int iNormalize(int index);
         int iFrontNormalize();
         int iBackNormalize();
-
-        T * buffer[];
-        int iFront;
-        int iBack;
-        int numCapacity;
     };
 }
 

@@ -40,16 +40,17 @@ template <class T>
 deque<T>& deque<T> :: operator = (const deque <T> & rhs)
 {
     clear();
-    if(lhs.capacity() < rhs.size())
+    if(numCapacity < rhs.size())
     {
         resize(rhs.size());
     }
-    for(int i = rhs.numCapacity; i < size(); i++;)
+    for(int i = rhs.numCapacity; i < size(); i++)
     {
         push_back(rhs.buffer[i % rhs.numCapacity]);
     }
     return *this;
 }
+
 template<class T>
 int deque<T> :: size()
 {
@@ -59,7 +60,7 @@ int deque<T> :: size()
 template <class T>
 bool deque<T> :: empty()
 {
-    size() = 0;
+    return size() == 0;
 }
 
 template <class T>
@@ -114,7 +115,7 @@ void deque<T> :: pop_back()
 template <class T>
 T & deque<T> :: front()
 {
-    if(empty)
+    if(empty())
     {
         throw "Error: deque is empty.";
     }
@@ -169,6 +170,12 @@ template <class T>
 int deque<T> :: capacity()
 {
     return numCapacity;
+}
+
+template <class T>
+int deque<T> :: iNormalize(int index)
+{
+    return index % capacity();
 }
 
 template <class T>
