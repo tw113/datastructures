@@ -214,7 +214,7 @@ int main(int argc, const char* argv[]) {
     try{
         assertTrue(normalizeDeque.iBackNormalize() == 0, __LINE__);
     } catch (const char * message) {
-        assertTrue(strcmp(message, "Error: Uninitialized deque.") == 0, __LINE__);
+        assertTrue(strcmp(message, "Error: uninitialized deque.") == 0, __LINE__);
     }
     //setting to simulate intialized deque
     normalizeDeque.numCapacity = 4;
