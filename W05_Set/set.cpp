@@ -15,9 +15,17 @@ set<T>:: set()
 template <class T>
 set<T>:: set(int numCapacity)
 {
-    buffer = NULL;
-    numElements = 0;
-    this->numCapacity = numCapacity;
+    if(numCapacity >= 0)
+    {
+        buffer = NULL;
+        numElements = 0;
+        this->numCapacity = numCapacity;
+        resize(numCapacity);
+    }
+    else
+    {
+        throw "Error: set sizes must be greater than or equal to 0.";
+    }
 }
 
 template <class T>
@@ -54,7 +62,6 @@ template <class T>
 void set<T>:: clear()
 {
     numElements = 0;
-    numCapacity = 0;
 }
 
 template <class T>
@@ -91,7 +98,14 @@ void set<T>:: insert(const T & t)
         int iInsert = findIndex(t);
         if (buffer[iInsert] != t)
         {
-            for(int i = iInsert; i < numElements; i++)
+            if(numElements == numCapacity)
+            {
+                if(numCapacity == 0)
+                    resize(1);
+                else
+                    resize(numCapacity * 2);
+            }
+            for(int i = numElements; i < iInsert; i++)
             {
                 buffer[i + 1] = buffer[i];
             }
@@ -120,6 +134,7 @@ typename set<T>::iterator set<T>::erase(typename set<T>::iterator it)
     }
 }
 
+// UNION
 template <class T>
 set<T>& set <T> :: operator || (const set <T> & rhs)
 {
@@ -153,9 +168,14 @@ set<T>& set <T> :: operator || (const set <T> & rhs)
         }
     }
 
+    if (result.numElements == 0)
+        result.buffer = NULL;
+    result.numCapacity = result.numElements;
+
     return result;
 }
 
+// INTERSECTION
 template <class T>
 set<T>& set <T> :: operator && (const set <T> & rhs)
 {
@@ -192,6 +212,7 @@ set<T>& set <T> :: operator && (const set <T> & rhs)
     return result;
 }
 
+// DIFFERENCE
 template <class T>
 set<T>& set <T> :: operator - (const set <T> & rhs)
 {
@@ -246,7 +267,6 @@ void set<T>::resize(int newCapacity)
    {
       numCapacity = 0;
       numElements = 0;
-      buffer = NULL;
    }
    
    if (newCapacity > 0)
