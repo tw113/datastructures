@@ -16,10 +16,17 @@ set<T>:: set()
 template <class T>
 set<T>:: set(int newCapacity)
 {
-   buffer = NULL;
-   numElements = 0;
-   this->numCapacity = numCapacity;
-    
+    if(numCapacity >= 0)
+    {
+        buffer = NULL;
+        numElements = 0;
+        this->numCapacity = numCapacity;
+        resize(numCapacity);
+    }
+    else
+    {
+        throw "Error: set sizes must be greater than or equal to 0.";
+    }
 }
 
 template <class T>
@@ -59,7 +66,6 @@ template <class T>
 void set<T>:: clear()
 {
     numElements = 0;
-    numCapacity = 0;
 }
 
 template <class T>
@@ -95,6 +101,36 @@ typename set<T>::iterator set<T>::find(const T & t)
 }
 
 template <class T>
+void set<T>:: insert(const T & t)
+{
+    if(buffer != NULL)
+    {
+        int iInsert = findIndex(t);
+        if (buffer[iInsert] != t)
+        {
+            if(numElements == numCapacity)
+            {
+                if(numCapacity == 0)
+                    resize(1);
+                else
+                    resize(numCapacity * 2);
+            }
+            for(int i = numElements; i < iInsert; i++)
+            {
+                buffer[i + 1] = buffer[i];
+            }
+            buffer[iInsert] = t;
+            numElements++;
+        }
+    }
+    else
+    {
+        resize(1);
+        buffer[0] = t;
+    }
+}
+
+template <class T>
 void set<T>::erase(iterator& it)
 {
     iterator iErase = find(*it);
@@ -108,6 +144,7 @@ void set<T>::erase(iterator& it)
     }
 }
 
+// UNION
 template <class T>
 set<T>& set <T> :: operator || (const set <T> & rhs)
 {
@@ -141,9 +178,14 @@ set<T>& set <T> :: operator || (const set <T> & rhs)
         }
     }
 
+    if (result.numElements == 0)
+        result.buffer = NULL;
+    result.numCapacity = result.numElements;
+
     return result;
 }
 
+// INTERSECTION
 template <class T>
 set<T>& set <T> :: operator && (const set <T> & rhs)
 {
@@ -180,6 +222,7 @@ set<T>& set <T> :: operator && (const set <T> & rhs)
     return result;
 }
 
+// DIFFERENCE
 template <class T>
 set<T>& set <T> :: operator - (const set <T> & rhs)
 {
@@ -277,7 +320,6 @@ void set<T>::resize(int newCapacity)
    {
       numCapacity = 0;
       numElements = 0;
-      buffer = NULL;
    }
    
    if (newCapacity > 0)

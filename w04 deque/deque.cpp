@@ -30,8 +30,7 @@ deque<T> :: deque(int numCapacity)
 template <class T>
 deque<T> :: deque(const deque <T> & rhs)
 {
-    iFront = 0;
-    iBack = -1;
+    clear();
     numCapacity = 0;
     *this = rhs;
 }
@@ -46,12 +45,11 @@ template <class T>
 deque<T>& deque<T> :: operator = (const deque <T> & rhs)
 {
     clear();
+    numCapacity = 0;
+    buffer = NULL;
     int rhsSize = rhs.iBack - rhs.iFront + 1;
-    if(numCapacity < rhsSize)
-    {
         resize(rhsSize);
-    }
-    for(int i = rhs.numCapacity; i < size(); i++)
+    for(int i = rhs.iFront; i <= iBack; i++)
     {
         push_back(rhs.buffer[i % rhs.numCapacity]);
     }
@@ -84,7 +82,7 @@ void deque<T> :: push_front(const T & t)
         resize(1);
     if(size() == capacity())
         resize(capacity() * 2);
-    iFront++;
+    iFront--;
     buffer[iFrontNormalize()] = t;
 }
 
@@ -166,10 +164,16 @@ void deque<T> :: resize(int newCapacity)
         else
             numElements = size();
         for (int i = 0; i < numElements; i++)
+        {
             newBuffer[i] = buffer[iFrontNormalize()];
+            iFront++;
+        }
+            
         delete [] buffer;
         buffer = newBuffer;
         numCapacity = newCapacity;
+        iFront = 0;
+        iBack = numElements - 1;
    }
 }
 
@@ -183,9 +187,22 @@ template <class T>
 int deque<T> :: iNormalize(int index)
 {
     if(numCapacity > 0)
-        return index % numCapacity;
+    {
+        if(index >= 0)
+        {
+            return index % numCapacity;
+        }
+        else if(numCapacity < (index * -1) )
+        {
+            return iNormalize(numCapacity + index);
+        }
+        else
+        {
+            return numCapacity + index;
+        }
+    } 
     else
-        return index;
+        throw "Error: uninitialized deque.";
     
 }
 
