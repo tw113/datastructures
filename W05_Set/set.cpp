@@ -257,7 +257,7 @@ set<T>& set <T> :: operator - (const set <T> & rhs)
     return result;
 }
 
-template <class T>
+/*template <class T>
 void set<T>::insert(const T& t)
 {
    int index = findIndex(t);
@@ -270,7 +270,7 @@ void set<T>::insert(const T& t)
       buffer[index] = t;
       numElements++;
    }
-}
+}*/
 
 template <class T>
 typename set<T>::iterator set<T>::begin()
