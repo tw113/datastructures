@@ -1,6 +1,11 @@
 #ifndef SET_H
 #define SET_H
 
+#ifdef UNIT_TESTING
+int main(int argc, const char* argv[]);
+#endif
+
+
 namespace custom
 {
     template <class T>
@@ -11,6 +16,7 @@ namespace custom
         int numCapacity;
         int numElements;
 
+        
         void resize(int newCapacity);
 
         public:
@@ -27,9 +33,10 @@ namespace custom
         int size();
         bool empty();
         void clear();
+        int capacity();
         iterator find(const T & t);
         void insert(const T & t);
-        iterator erase(iterator it);
+        void erase(iterator& it);
         set<T> & operator || (const set <T> & rhs);
         set<T> & operator && (const set <T> & rhs);
         set<T> & operator - (const set <T> & rhs);

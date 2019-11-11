@@ -7,17 +7,19 @@ using namespace custom;
 template <class T>
 set<T>:: set()
 {
-    numCapacity = 0;
-    numElements = 0;
-    buffer = NULL;
+   numCapacity = 0;
+   numElements = 0;
+   buffer = NULL;
+   
 }
 
 template <class T>
-set<T>:: set(int numCapacity)
+set<T>:: set(int newCapacity)
 {
-    buffer = NULL;
-    numElements = 0;
-    this->numCapacity = numCapacity;
+   buffer = NULL;
+   numElements = 0;
+   this->numCapacity = numCapacity;
+    
 }
 
 template <class T>
@@ -35,7 +37,10 @@ set<T>:: ~set()
 template <class T>
 set<T>& set <T> :: operator = (const set <T> & rhs)
 {
-
+   for (int i = 0; i < rhs.numElements; i++)
+    	buffer[i] = rhs.buffer[i];
+   numElements = rhs.numElements;
+   return *this;
 }
 
 template <class T>
@@ -55,6 +60,12 @@ void set<T>:: clear()
 {
     numElements = 0;
     numCapacity = 0;
+}
+
+template <class T>
+int set<T>:: capacity()
+{
+    return numCapacity;
 }
 
 template <class T>
@@ -84,30 +95,7 @@ typename set<T>::iterator set<T>::find(const T & t)
 }
 
 template <class T>
-void set<T>:: insert(const T & t)
-{
-    if(buffer != NULL)
-    {
-        int iInsert = findIndex(t);
-        if (buffer[iInsert] != t)
-        {
-            for(int i = iInsert; i < numElements; i++)
-            {
-                buffer[i + 1] = buffer[i];
-            }
-            buffer[iInsert] = t;
-            numElements++;
-        }
-    }
-    else
-    {
-        resize(1);
-        buffer[0] = t;
-    }
-}
-
-template <class T>
-typename set<T>::iterator set<T>::erase(typename set<T>::iterator it)
+void set<T>::erase(iterator& it)
 {
     iterator iErase = find(*it);
     if(iErase == it)
@@ -195,7 +183,50 @@ set<T>& set <T> :: operator && (const set <T> & rhs)
 template <class T>
 set<T>& set <T> :: operator - (const set <T> & rhs)
 {
+    int iLhs = 0;
+    int iRhs = 0;
+    set<T> result(numElements + rhs.numElements);
 
+    while (iLhs < numElements || iRhs < rhs.numElements)
+    {
+        if(iLhs == numElements)
+            break;
+    
+        else if(iRhs == rhs.numElements)
+            result.buffer[result.numElements++] = buffer[iLhs++];
+
+        else if(buffer[iLhs] < rhs.buffer[iRhs])
+            result.buffer[result.numElements++] = buffer[iLhs++];
+
+        else if(buffer[iLhs] > rhs.buffer[iRhs]) 
+            iRhs++;
+
+        else if(buffer[iLhs] == rhs.buffer[iRhs])
+        {
+            iRhs++;
+            iLhs++;
+        }
+    }
+    if(result.numElements == 0)
+        result.buffer = NULL;
+    result.numCapacity = result.numElements;
+
+    return result;
+}
+
+template <class T>
+void set<T>::insert(const T& t)
+{
+   int index = findIndex(t);
+   if (index == numElements || buffer[index] != t)
+   {
+      if (numCapacity == numElements)
+         resize(numCapacity == 0 ? 1 : numCapacity * 2);
+      for (int i = numElements; i > index; i--)
+         buffer[i] = buffer[i - 1];
+      buffer[index] = t;
+      numElements++;
+   }
 }
 
 template <class T>
