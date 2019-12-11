@@ -40,7 +40,7 @@ namespace custom
          iterator begin();
          iterator end();
 
-      private:
+      public:
          void init();
 
          // recursive helper methods
